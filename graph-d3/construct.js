@@ -11,8 +11,20 @@ function construct_rand_graph(num_V, num_E) {
 	 * v_e = (100 / |V|) * i * e_l
 	 */
 	 let V = construct_vertices(num_V); 
-	 let E = construct_edges(V, num_E);
+	 let E = construct_rand_edges(V, num_E);
 	 return { V, E };
+}
+
+function construct_complete_graph(num_V) {
+	/* 
+	 * A complete graph is a graph where a vertex has an edge to all other 
+	 * vertices for all vertices. This graph will be undirected.
+	 * 
+	 * num_E = (num_V - 1)^2 / 2
+	 */
+	let V = construct_vertices(num_V);
+	let E = construct_complete_edges(V);
+	return { V, E };
 }
 
 function construct_vertices(num_V) {
@@ -26,7 +38,7 @@ function construct_vertices(num_V) {
 	return V;
 }
 
-function construct_edges(V, num_E) {
+function construct_rand_edges(V, num_E) {
 	let E = []; 
 	let num_left = num_E + 1;
 
@@ -42,6 +54,28 @@ function construct_edges(V, num_E) {
 	return E;
 }
 
+function construct_complete_edges(V) {
+	let E = []; 
+
+	let i; 
+	for (i = 0; i < V.length - 1; i++) {
+		[...Array(V.length - i)].map((_, index) => {
+			index = index + i;
+			if (index !== i) {
+				let obj = {
+					source: V[i].id, 
+					target: V[index].id, 
+					distance: calculate_geometric_dist(i, index)
+				}; 
+				console.log(obj);
+				E.push(obj);
+			}
+		});
+	}
+
+	return E;
+}
+
 function pick_vertex(V) {
 	return {
 		source: rand_one(V).id,
@@ -52,4 +86,8 @@ function pick_vertex(V) {
 
 function rand_one(arr) {
 	return arr[Math.floor(Math.random() * (arr.length))]; 
+}
+
+function calculate_geometric_dist(ind1, ind2) {
+	return Math.floor(Math.random() * 200);
 }
