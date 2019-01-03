@@ -23,12 +23,13 @@ const edge = {
     isBidirectional: false 
 };
 
+
 function dijkstra(V, E, s_vertex, e_vertex) {
     q = fillQueue(V);
     closed = [];
 
     while(!isBaseCase(q, e)) {
-        let currVertex = q.getTop();
+        let currVertex = q.top;
         let neighbors = currVertex.getNeighbors();
 
         neighbors.forEach(neighbor => 
@@ -64,11 +65,11 @@ function isBaseCase(q, e) {
         return true;
     }
 
-    if (q.getTop().distFromSrc === INFINITY) {
+    if (q.top.distFromSrc === INFINITY) {
         return true;
     }
 
-    if (q.getTop().id === e.id) {
+    if (q.top.id === e.id) {
         return true;
     }
 

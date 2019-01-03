@@ -1,63 +1,76 @@
 function heap_sort(A, descending) {
+	let comparator = (n1, n2) => {
+		if (n1 > n2) {
+			return 1;
+		} 
+		if (n1 < n2) {
+			return -1; 
+		}
+
+		console.log(`{n1} is equal to {n2}`); 
+		return 0;
+	};
+
 	if (!descending) {
-		return heap_sort_ascending(A);
+		return heap_sort_ascending(A, comparator);
 	} else {
-		return heap_sort_descending(A);
+		return heap_sort_descending(A, comparator);
 	}
 }
 
-function heap_sort_ascending(A) {
-	build_min_heap(A); 
+function heap_sort_ascending(A, comparator) {
+	build_min_heap(A, comparator); 
 
 	let i, sorted = []; 
 	for (i = A.length - 1; i > 0; i--) {
+		console.log(A);
 		sorted.push(A[0]);
-		min_heapify(A = A.slice(1, A.length), 0);
+		min_heapify(A = A.slice(1, A.length), 0, comparator);
 	}
 
 	sorted.push(A[0]);
 	return sorted;
 }
 
-function heap_sort_descending(A) {
-	build_max_heap(A); 
+function heap_sort_descending(A, comparator) {
+	build_max_heap(A, comparator); 
 
 	let i, sorted = []; 
 	for (i = A.length - 1; i > 0; i--) {
 		sorted.push(A[0]);
-		max_heapify(A = A.slice(1, A.length), 0);
+		max_heapify(A = A.slice(1, A.length), 0, comparator);
 	}
 
 	sorted.push(A[0]);
 	return sorted;
 }
 
-function build_max_heap(A) {
+function build_max_heap(A, comparator) {
 	let i; 
 	for (i = Math.floor((A.length - 1) / 2); i >= 0; i--) {
-		max_heapify(A, i);
+		max_heapify(A, i, comparator);
 	}
 }
 
-function build_min_heap(A) {
+function build_min_heap(A, comparator) {
 	let i; 
 	for (i = Math.floor((A.length - 1) / 2); i >= 0; i--) {
-		min_heapify(A, i);
+		min_heapify(A, i, comparator);
 	}
 }
 
-function max_heapify(A, i) {
+function max_heapify(A, i, comparator) {
 	let l = left(A, i);
 	let r = right(A, i);
 
 	if (!l && !r)
 		return;
 
-	let largest = i; 
-	if (l && A[l] > A[largest]) {
+	let largest = i;
+	if (l && (comparator(A[l], A[largest]) > 0)) {
 		largest = l;
 	} 
-	if (r && A[r] > A[largest]) {
+	if (r && (comparator(A[r], A[largest]) > 0)) {
 		largest = r;
 	}
 
@@ -65,10 +78,10 @@ function max_heapify(A, i) {
 		return;
 
 	swap(A, i, largest);
-	max_heapify(A, largest);
+	max_heapify(A, largest, comparator);
 }
 
-function min_heapify(A, i) {
+function min_heapify(A, i, comparator) {
 	let l = left(A, i);
 	let r = right(A, i);
 
@@ -76,10 +89,10 @@ function min_heapify(A, i) {
 		return;
 
 	let smallest = i; 
-	if (l && A[l] < A[smallest]) {
+	if (l && (comparator(A[l], A[smallest]) < 0)) {
 		smallest = l;
 	} 
-	if (r && A[r] < A[smallest]) {
+	if (r && (comparator(A[r], A[smallest]) < 0)) {
 		smallest = r;
 	}
 
@@ -87,7 +100,7 @@ function min_heapify(A, i) {
 		return;
 
 	swap(A, i, smallest);
-	min_heapify(A, smallest);
+	min_heapify(A, smallest, comparator);
 }
 
 function left(A, i) {
