@@ -24,4 +24,4 @@ function timed(A, algo, name) {
 }
 
 
-test_perf([...Array(5000)].map(() => Math.random() * 5000));
+test_perf([...Array(10000)].map(() => Math.random() * 10000));
