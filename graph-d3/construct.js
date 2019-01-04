@@ -1,5 +1,6 @@
 const RAND_MULTIPLIER = 1000;
 
+
 function construct_rand_graph(num_V, num_E) {
 	/* 
 	 * Exhaustively different number of edges --> 
