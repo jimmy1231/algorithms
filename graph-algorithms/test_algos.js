@@ -12,11 +12,12 @@ function test_algos() {
     let start_v = V_struct[Math.floor(Math.random() * num_v)];
     let end_v = V_struct[Math.floor(Math.random() * num_v)];
 
-    console.log('============================================='); 
-    console.log(`From Vertex: ${start_v.id} to Vertex: ${end_v.id}`);
-    console.log('============================================='); 
+    console.log('====================================='); 
+    console.log(`From: ${start_v.id} to: ${end_v.id}`);
+    console.log('====================================='); 
 
-    dijkstra(V_struct, E_struct, start_v, end_v);
+    let shortest = dijkstra(V_struct, E_struct, start_v, end_v);
+    console.log('Shortest Path:', formatEdges(shortest));
 }
 
 function construct_map_graph({V, E}) {
@@ -67,6 +68,32 @@ function construct_edges(E) {
 
     E.forEach((e, index) => E_struct[index] = e);
     return E_struct;
+}
+
+function formatEdges(edges) {
+    return edges.map(edge => {
+        return {
+            id: edge.id,
+            from: edge.from.id,
+            to: edge.to.id,
+            length: edge.length
+        }; 
+    }); 
+}
+
+function formatVertices(vertices) {
+    return Object.keys(vertices).map(vId => {
+        let v = vertices[vId]; 
+        let edgeIds = v.edges.map(edge => edge.id);
+        return {
+            id: v.id, 
+            edgeIds: edgeIds, 
+            visited: v.isVisited, 
+            d_src: v.distFromSrc, 
+            v_prev: v.v_prev ? v.v_prev.id : null,
+            e_prev: v.e_prev ? v.e_prev.id : null
+        }; 
+    }); 
 }
 
 test_algos()

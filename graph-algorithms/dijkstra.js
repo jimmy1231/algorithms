@@ -78,35 +78,8 @@ function traceback(V, s, e) {
         v_curr = v_curr.v_prev;
     }
 
-    console.log('Shortest Path:', 
-        formatEdges(shortestPath));
     return shortestPath;
 }
 
-function formatEdges(edges) {
-    return edges.map(edge => {
-        return {
-            id: edge.id,
-            from: edge.from.id,
-            to: edge.to.id,
-            length: edge.length
-        }; 
-    }); 
-}
-
-function formatVertices(vertices) {
-    return Object.keys(vertices).map(vId => {
-        let v = vertices[vId]; 
-        let edgeIds = v.edges.map(edge => edge.id);
-        return {
-            id: v.id, 
-            edgeIds: edgeIds, 
-            visited: v.isVisited, 
-            d_src: v.distFromSrc, 
-            v_prev: v.v_prev ? v.v_prev.id : null,
-            e_prev: v.e_prev ? v.e_prev.id : null
-        }; 
-    }); 
-}
 
 module.exports = dijkstra;
