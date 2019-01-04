@@ -1,3 +1,5 @@
+const RAND_MULTIPLIER = 1000;
+
 function construct_rand_graph(num_V, num_E) {
 	/* 
 	 * Exhaustively different number of edges --> 
@@ -47,7 +49,9 @@ function construct_rand_edges(V, num_E) {
 		v_e = Math.floor((1 / (V.length + 1)) * i * num_left);
 		num_left = num_left - v_e;
 
-		let E_i = [...Array(v_e)].map(e => pick_vertex(V));
+		let E_i = [...Array(v_e)].map((e, index) => 
+			pick_vertex(V, i)
+		);
 		E_i.map(e_i => E.push(e_i));
 	}
 
@@ -58,16 +62,14 @@ function construct_complete_edges(V) {
 	let E = []; 
 
 	let i; 
-	for (i = 0; i < V.length - 1; i++) {
-		[...Array(V.length - i)].map((_, index) => {
-			index = index + i;
+	for (i = 0; i < V.length; i++) {
+		[...Array(V.length)].map((_, index) => {
 			if (index !== i) {
 				let obj = {
 					source: V[i].id, 
 					target: V[index].id, 
 					distance: calculate_geometric_dist(i, index)
 				}; 
-				console.log(obj);
 				E.push(obj);
 			}
 		});
@@ -76,11 +78,11 @@ function construct_complete_edges(V) {
 	return E;
 }
 
-function pick_vertex(V) {
+function pick_vertex(V, i) {
 	return {
 		source: rand_one(V).id,
 		target: rand_one(V).id,
-		distance: Math.floor(Math.random() * 200)
+		distance: Math.floor(Math.random() * RAND_MULTIPLIER)
 	};
 }
 
@@ -89,5 +91,11 @@ function rand_one(arr) {
 }
 
 function calculate_geometric_dist(ind1, ind2) {
-	return Math.floor(Math.random() * 200);
+	return Math.floor(Math.random() * RAND_MULTIPLIER);
 }
+
+
+module.exports = {
+	construct_rand_graph, 
+	construct_complete_graph
+};

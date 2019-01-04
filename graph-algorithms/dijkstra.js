@@ -1,34 +1,13 @@
+const PriorityQueue = require('../data-structures/priority_queue');
 const INFINITY = Number.MAX_SAFE_INTEGER;
-
-const vertex = {
-    id: vId,
-    edges: [edge, edge],
-    isVisited: false, 
-    distFromSrc: INFINITY, 
-    prevVertex: vertex, 
-    prevEdge: edge,
-    getNeighbors: function() {
-        return this.edges.map(edge => {
-            let edge.to.id === this.id ? edge.from : edge.to;
-            return {vertex, edge};
-        });
-    }
-};
-
-const edge = {
-    id: eId, 
-    length: 0, 
-    from: vertex, 
-    to: vertex, 
-    isBidirectional: false 
-};
 
 
 function dijkstra(V, E, s_vertex, e_vertex) {
+    s_vertex.distFromSrc = 0;
     q = fillQueue(V);
     closed = [];
 
-    while(!isBaseCase(q, e)) {
+    while(!isBaseCase(q, e_vertex)) {
         let currVertex = q.top;
         let neighbors = currVertex.getNeighbors();
 
@@ -41,11 +20,17 @@ function dijkstra(V, E, s_vertex, e_vertex) {
         q.pop();
     }
 
-    return traceback(V, e);
+    return traceback(V, s_vertex, e_vertex);
 }
 
 function fillQueue(V) {
-    let q = new PriorityQueue();
+    let comparator = (v1, v2) => {
+        if (v1.distFromSrc > v2.distFromSrc) return 1; 
+        if (v1.distFromSrc < v2.distFromSrc) return -1; 
+        return 0;
+    };
+
+    let q = new PriorityQueue(comparator);
     Object.keys(V).forEach(key => q.push(V[key]));
     return q;
 }
@@ -61,7 +46,7 @@ function relax(currVertex, neighbor) {
 }
 
 function isBaseCase(q, e) {
-    if (q.isEmpty()) {
+    if (q.size === 0) {
         return true;
     }
 
@@ -79,11 +64,45 @@ function isBaseCase(q, e) {
 function traceback(V, s, e) {
     let shortestPath = []; 
 
-    let currVertex = e;
-    while(currVertex.id !== s.id) {
-        shortestPath.push(e.prevEdge);
-        currVertex =currVertex.prevVertex;
+    if (!e.prevEdge) {
+        console.log('Path does not exist');
+        return shortestPath; 
     }
 
+    let currVertex = e;
+    while(currVertex.id !== s.id) {
+        shortestPath.unshift(currVertex.prevEdge);
+        currVertex = currVertex.prevVertex;
+    }
+
+    console.log('Shortest Path:', formatEdges(shortestPath));
     return shortestPath;
 }
+
+function formatEdges(edges) {
+    return edges.map(edge => {
+        return {
+            id: edge.id,
+            from: edge.from.id,
+            to: edge.to.id,
+            length: edge.length
+        }; 
+    }); 
+}
+
+function formatVertices(vertices) {
+    return Object.keys(vertices).map(vId => {
+        let v = vertices[vId]; 
+        let edgeIds = v.edges.map(edge => edge.id);
+        return {
+            id: v.id, 
+            edgeIds: edgeIds, 
+            isVisited: v.isVisited, 
+            distFromSrc: v.distFromSrc, 
+            prevVertex: v.prevVertex ? v.prevVertex.id : null,
+            prevEdge: v.prevEdge ? v.prevEdge.id : null
+        }; 
+    }); 
+}
+
+module.exports = dijkstra;

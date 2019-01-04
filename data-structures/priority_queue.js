@@ -23,11 +23,13 @@ class PriorityQueue {
         return this.queue.slice();
     }
 
+    get size() {
+        return this.queue.length;
+    }
+
     push(obj) {
         this.queue.unshift(obj);
-        console.log('Insert:', obj, this.queue);
         this.heapify();
-        console.log('Heaped:', this.queue);
     }
 
     pop() {
