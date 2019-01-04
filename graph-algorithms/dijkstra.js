@@ -2,31 +2,31 @@ const PriorityQueue = require('../data-structures/priority_queue');
 const INFINITY = Number.MAX_SAFE_INTEGER;
 
 
-function dijkstra(V, E, s_vertex, e_vertex) {
-    s_vertex.distFromSrc = 0;
+function dijkstra(V, E, v_src, v_dest) {
+    v_src.d_src = 0;
     q = fillQueue(V);
     closed = [];
 
-    while(!isBaseCase(q, e_vertex)) {
-        let currVertex = q.top;
-        let neighbors = currVertex.getNeighbors();
+    while(!isBaseCase(q, v_dest)) {
+        let v_curr = q.top;
+        let neighbors = v_curr.neighbors();
 
         neighbors.forEach(neighbor => 
-            relax(currVertex, neighbor)
+            relax(v_curr, neighbor)
         );
 
-        currVertex.isVisited = true;
-        closed.push(currVertex);
+        v_curr.visited = true;
+        closed.push(v_curr);
         q.pop();
     }
 
-    return traceback(V, s_vertex, e_vertex);
+    return traceback(V, v_src, v_dest);
 }
 
 function fillQueue(V) {
     let comparator = (v1, v2) => {
-        if (v1.distFromSrc > v2.distFromSrc) return 1; 
-        if (v1.distFromSrc < v2.distFromSrc) return -1; 
+        if (v1.d_src > v2.d_src) return 1; 
+        if (v1.d_src < v2.d_src) return -1; 
         return 0;
     };
 
@@ -35,13 +35,16 @@ function fillQueue(V) {
     return q;
 }
 
-function relax(currVertex, neighbor) {
-    let newDistFromSrc = currVertex.distFromSrc + neighbor.edge.length; 
+function relax(v_curr, neighbor) {
+    let v_n = neighbor.v;
+    let e_n = neighbor.e;
+
+    let new_d_src = v_curr.d_src + e_n.length; 
     
-    if (newDistFromSrc < neighbor.vertex.distFromSrc) {
-        neighbor.vertex.distFromSrc = newDistFromSrc; 
-        neighbor.vertex.prevVertex = currVertex; 
-        neighbor.vertex.prevEdge = neighbor.edge;
+    if (new_d_src < v_n.d_src) {
+        v_n.d_src = new_d_src; 
+        v_n.v_prev = v_curr; 
+        v_n.e_prev = e_n;
     }
 }
 
@@ -50,7 +53,7 @@ function isBaseCase(q, e) {
         return true;
     }
 
-    if (q.top.distFromSrc === INFINITY) {
+    if (q.top.d_src === INFINITY) {
         return true;
     }
 
@@ -64,18 +67,19 @@ function isBaseCase(q, e) {
 function traceback(V, s, e) {
     let shortestPath = []; 
 
-    if (!e.prevEdge) {
+    if (!e.e_prev) {
         console.log('Path does not exist');
         return shortestPath; 
     }
 
-    let currVertex = e;
-    while(currVertex.id !== s.id) {
-        shortestPath.unshift(currVertex.prevEdge);
-        currVertex = currVertex.prevVertex;
+    let v_curr = e;
+    while(v_curr.id !== s.id) {
+        shortestPath.unshift(v_curr.e_prev);
+        v_curr = v_curr.v_prev;
     }
 
-    console.log('Shortest Path:', formatEdges(shortestPath));
+    console.log('Shortest Path:', 
+        formatEdges(shortestPath));
     return shortestPath;
 }
 
@@ -97,10 +101,10 @@ function formatVertices(vertices) {
         return {
             id: v.id, 
             edgeIds: edgeIds, 
-            isVisited: v.isVisited, 
-            distFromSrc: v.distFromSrc, 
-            prevVertex: v.prevVertex ? v.prevVertex.id : null,
-            prevEdge: v.prevEdge ? v.prevEdge.id : null
+            visited: v.isVisited, 
+            d_src: v.distFromSrc, 
+            v_prev: v.v_prev ? v.v_prev.id : null,
+            e_prev: v.e_prev ? v.e_prev.id : null
         }; 
     }); 
 }

@@ -11,7 +11,7 @@ function test_algos() {
     let num_v = Object.keys(V_struct).length; 
     let start_v = V_struct[Math.floor(Math.random() * num_v)];
     let end_v = V_struct[Math.floor(Math.random() * num_v)];
-    
+
     console.log('============================================='); 
     console.log(`From Vertex: ${start_v.id} to Vertex: ${end_v.id}`);
     console.log('============================================='); 
@@ -35,20 +35,20 @@ function construct_vertices(V) {
     let V_struct = {};
 
     let getNeighbors = function() {
-        return this.edges.map(edge => {
-            let vertex = edge.to.id === this.id ? edge.from : edge.to;
-            return {vertex, edge};
+        return this.edges.map(e => {
+            let v = e.to.id === this.id ? e.from : e.to;
+            return {v, e};
         });
     }
 
     V = V.map(v => ({
         id: v.id,
         edges: [],
-        isVisited: false,
-        distFromSrc: INFINITY,
-        prevVertex: null,
-        prevEdge: null,
-        getNeighbors
+        visited: false,
+        d_src: INFINITY,
+        v_prev: null,
+        e_prev: null,
+        neighbors: getNeighbors
     }));
 
     V.forEach(v => V_struct[v.id] = v);
