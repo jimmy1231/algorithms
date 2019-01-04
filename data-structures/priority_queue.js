@@ -24,19 +24,32 @@ class PriorityQueue {
     }
 
     push(obj) {
-        this.queue.push(obj);
-        this.reheap();
+        this.queue.unshift(obj);
+        console.log('Insert:', obj, this.queue);
+        this.heapify();
+        console.log('Heaped:', this.queue);
     }
 
     pop() {
-        let obj = this.queue.shift(); 
-        this.reheap();
+        if (!this.queue.length) {
+            return null;
+        }
+
+        let obj = this.queue[0];
+        this.swap(0, this.queue.length - 1); 
+        this.queue = this.queue.slice(0, this.queue.length - 1);
+
+        this.heapify();
+        return obj;
     }
 
-    reheap() {
-        Heap.build_min_heap(
-            this.queue, this.comparator
-        );
+    heapify() {
+        Heap.min_heapify(this.queue, 0, this.comparator);
+    }
+
+    swap(ind1, ind2) {
+        let A = this.queue;
+        [A[ind1], A[ind2]] = [A[ind2], A[ind1]];
     }
 }
 

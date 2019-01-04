@@ -1,13 +1,7 @@
 function heap_sort(A, descending) {
 	let comparator = (n1, n2) => {
-		if (n1 > n2) {
-			return 1;
-		} 
-		if (n1 < n2) {
-			return -1; 
-		}
-
-		console.log(`{n1} is equal to {n2}`); 
+		if (n1 > n2) return 1;
+		if (n1 < n2) return -1;
 		return 0;
 	};
 
@@ -23,9 +17,10 @@ function heap_sort_ascending(A, comparator) {
 
 	let i, sorted = []; 
 	for (i = A.length - 1; i > 0; i--) {
-		console.log(A);
-		sorted.push(A[0]);
-		min_heapify(A = A.slice(1, A.length), 0, comparator);
+		swap(A, 0, A.length - 1);
+		sorted.push(A[A.length - 1]);
+
+		min_heapify(A = A.slice(0, A.length - 1), 0, comparator);
 	}
 
 	sorted.push(A[0]);
@@ -37,8 +32,10 @@ function heap_sort_descending(A, comparator) {
 
 	let i, sorted = []; 
 	for (i = A.length - 1; i > 0; i--) {
-		sorted.push(A[0]);
-		max_heapify(A = A.slice(1, A.length), 0, comparator);
+		swap(A, 0, A.length - 1);
+		sorted.push(A[A.length - 1]);
+
+		max_heapify(A = A.slice(0, A.length - 1), 0, comparator);
 	}
 
 	sorted.push(A[0]);
