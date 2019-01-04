@@ -62,13 +62,11 @@ function construct_complete_edges(V) {
 		[...Array(V.length - i)].map((_, index) => {
 			index = index + i;
 			if (index !== i) {
-				let obj = {
+				E.push({
 					source: V[i].id, 
 					target: V[index].id, 
 					distance: calculate_geometric_dist(i, index)
-				}; 
-				console.log(obj);
-				E.push(obj);
+				});
 			}
 		});
 	}

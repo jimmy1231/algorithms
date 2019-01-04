@@ -2,7 +2,7 @@ var svg = d3.select("svg");
 var width = +svg.attr("width");
 var height = +svg.attr("height");
 
-var { V, E } = construct_complete_graph(6);
+var { V, E } = construct_complete_graph(15);
 var nodes_data = V;
 var links_data = E;
 
