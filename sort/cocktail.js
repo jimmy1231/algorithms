@@ -1,4 +1,4 @@
-function cocktail_sort(A) {
+function cocktail(A) {
 	let i = 0, j = A.length - 1;
 	while (i <= j) {
 		forward(A, i, j);
@@ -42,5 +42,5 @@ function swap(A, ind1, ind2) {
 
 
 module.exports = {
-	cocktail_sort
+	cocktail_sort: cocktail
 };

@@ -1,10 +1,10 @@
 function bubble_sort_copy(array) {
 	let copy = array.slice(); 
-	bubble_sort(copy);
+	bubble(copy);
 	return copy;
 }
 
-function bubble_sort(array) {
+function bubble(array) {
 	while(true) {
 		if (!bubble(array)) {
 			break;
@@ -33,6 +33,6 @@ function bubble(array) {
 
 
 module.exports = {
-	bubble_sort, 
+	bubble_sort: bubble,
 	bubble_sort_copy
 };

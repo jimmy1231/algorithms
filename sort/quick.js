@@ -1,10 +1,10 @@
 function quick_sort_copy(A, lower, upper) {
 	let A_c = A.slice();
-	quick_sort(A_c, lower, upper);
+	quick(A_c, lower, upper);
 	return A_c;
 }
 
-function quick_sort(A) {
+function quick(A) {
 	_quick_sort(A, 0, A.length - 1);
 }
 
@@ -41,6 +41,6 @@ function swap(A, ind1, ind2) {
 
 
 module.exports = {
-	quick_sort, 
+	quick_sort: quick,
 	quick_sort_copy
 };

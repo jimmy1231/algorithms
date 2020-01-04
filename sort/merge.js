@@ -1,4 +1,4 @@
-function merge_sort(A) {
+function merge(A) {
 	_merge_sort(A, 0, A.length - 1);
 }
 
@@ -56,5 +56,5 @@ function copy_into(A, arr, lower, upper) {
 
 
 module.exports = {
-	merge_sort
+	merge_sort: merge
 };

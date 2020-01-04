@@ -1,4 +1,4 @@
-function insertion_sort(A) {
+function insertion(A) {
 	let i, j; 
 	for (i = 0; i < A.length; i++) {
 		if (i === 0) continue; 
@@ -17,5 +17,5 @@ function swap(A, ind1, ind2) {
 
 
 module.exports = {
-	insertion_sort
+	insertion_sort: insertion
 };

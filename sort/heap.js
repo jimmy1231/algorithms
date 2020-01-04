@@ -1,4 +1,4 @@
-function heap_sort(A, descending) {
+function heap(A, descending) {
 	if (!descending) {
 		return heap_sort_ascending(A);
 	} else {
@@ -106,7 +106,7 @@ function swap(A, ind1, ind2) {
 
 
 module.exports = {
-	heap_sort, 
+	heap_sort: heap,
 	max_heapify, 
 	min_heapify,
 	build_max_heap,

@@ -1,9 +1,9 @@
-const { bubble_sort    } = require('./bubble_sort');
-const { cocktail_sort  } = require('./cocktail_sort');
-const { heap_sort      } = require('./heap_sort');
-const { merge_sort     } = require('./merge_sort');
-const { quick_sort     } = require('./quick_sort');
-const { insertion_sort } = require('./insertion_sort');
+const { bubble_sort    } = require('./bubble');
+const { cocktail_sort  } = require('./cocktail');
+const { heap_sort      } = require('./heap');
+const { merge_sort     } = require('./merge');
+const { quick_sort     } = require('./quick');
+const { insertion_sort } = require('./insertion');
 
 function test_perf(A) {
 	let B = timed(A.slice(), bubble_sort, 'Bubble Sort');
